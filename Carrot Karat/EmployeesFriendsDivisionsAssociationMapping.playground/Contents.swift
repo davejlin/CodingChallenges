@@ -58,8 +58,8 @@ func getDivisionsData(for employees: [String], with friendsMap: [String: [String
     var divisionsData = [String:[String:Int]]()
     var idToDivisionMap = [String:String]()
     
-    let keyNameNumberOfEmployees = "Employees"
-    let keyNameNumberOfEmployeesWithFriendsOutsideOfHisDivision = "With Outside Friends"
+    let keyNumberOfEmployees = "Employees"
+    let keyNumberOfEmployeesWithFriendsOutsideOfHisDivision = "With Outside Friends"
     
     for employee in employees {
         let data = employee.components(separatedBy: ",")
@@ -67,21 +67,21 @@ func getDivisionsData(for employees: [String], with friendsMap: [String: [String
         let division = data[2]
         idToDivisionMap[id] = division
     }
-
+    
     for (employeeId, friends) in friendsMap {
         if let division = idToDivisionMap[employeeId] {
             if divisionsData[division] == nil {
                 divisionsData[division] = [String:Int]()
-                divisionsData[division]![keyNameNumberOfEmployees] = 0
-                divisionsData[division]![keyNameNumberOfEmployeesWithFriendsOutsideOfHisDivision] = 0
+                divisionsData[division]![keyNumberOfEmployees] = 0
+                divisionsData[division]![keyNumberOfEmployeesWithFriendsOutsideOfHisDivision] = 0
             }
             
-            divisionsData[division]![keyNameNumberOfEmployees]! += 1
+            divisionsData[division]![keyNumberOfEmployees]! += 1
             
             for friendId in friends {
                 let friendDivision = idToDivisionMap[friendId]
                 if division != friendDivision {
-                    divisionsData[division]![keyNameNumberOfEmployeesWithFriendsOutsideOfHisDivision]! += 1
+                    divisionsData[division]![keyNumberOfEmployeesWithFriendsOutsideOfHisDivision]! += 1
                 }
             }
         }
