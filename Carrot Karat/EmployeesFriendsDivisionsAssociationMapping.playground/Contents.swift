@@ -27,9 +27,11 @@ var friendsInput = [
     "1,2",
     "1,7",
     "1,5",
+    "1,8",
     "2,7",
     "7,8",
-    "8,12"
+    "8,12",
+    "8,5"
 ]
 
 func getFriendsMap(for employees:[String], with friends:[String]) -> [String: [String]] {
@@ -82,6 +84,7 @@ func getDivisionsData(for employees: [String], with friendsMap: [String: [String
                 let friendDivision = idToDivisionMap[friendId]
                 if division != friendDivision {
                     divisionsData[division]![keyNumberOfEmployeesWithFriendsOutsideOfHisDivision]! += 1
+                    break // only need to count a single outside association per employee
                 }
             }
         }
