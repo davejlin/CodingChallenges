@@ -27,47 +27,41 @@ struct Point {
 typealias RectDataTuple = (topLeft: Point, width: Int, height: Int)
 
 func getRectangle(in image: [[Int]], startAt startPoint: Point) -> RectDataTuple? {
-    var topLeft: Point = Point(x: -1, y: -1)
-    let rowStart = startPoint.x
+    var topLeft: Point?
     
     let nRows = image.count
     let nColumns = image[0].count
     
-    var foundRectangle = false
+    let rowStart = startPoint.x
+    var y = startPoint.y
     
     rowLoop: for x in rowStart..<nRows {
-        for y in 0..<nColumns {
-            let element = image[x][y]
-            if element == 0 {
+        while y < nColumns {
+            if image[x][y] == 0 {
                 topLeft = Point(x:x, y:y)
-                foundRectangle = true
                 break rowLoop
             }
+            y += 1
         }
+        y = 0
     }
     
-    guard foundRectangle else { return nil }
+    guard let _topLeft = topLeft else { return nil }
     
     var width = 0
     var height = 0
     
-    for y in topLeft.y..<nColumns {
-        let element = image[topLeft.x][y]
-        if element == 1 {
-            break
-        }
+    for y in _topLeft.y..<nColumns {
+        if image[_topLeft.x][y] == 1 { break }
         width += 1
     }
     
-    for x in topLeft.x..<nRows {
-        let element = image[x][topLeft.y]
-        if element == 1 {
-            break
-        }
+    for x in _topLeft.x..<nRows {
+        if image[x][_topLeft.y] == 1 { break }
         height += 1
     }
     
-    return (topLeft, width, height)
+    return (_topLeft, width, height)
 }
 
 let startPoint = Point(x:0, y:0)
@@ -80,15 +74,16 @@ if let rect1 = getRectangle(in: image1, startAt: startPoint) {
 // image2 expected results:
 // 1. top-left = (0,0), width = 2, height = 2
 // 2. top-left = (2,3), width = 4, height = 3
-// 3. top-left = (4,1), width = 1, height = 2
-// 4. top-left = (6,6), width = 3, height = 3
-// 5. top-left = (7,1), width = 3, height = 1
-// 6. top-left = (9,3), width = 1, height = 1
+// 3. top-left = (2,8), width = 2, height = 2
+// 4. top-left = (4,1), width = 1, height = 2
+// 5. top-left = (6,6), width = 3, height = 3
+// 6. top-left = (7,1), width = 3, height = 1
+// 7. top-left = (9,3), width = 1, height = 1
 let image2 = [
     [0,0,1,1,1,1,1,1,1,1],
     [0,0,1,1,1,1,1,1,1,1],
-    [1,1,1,0,0,0,0,1,1,1],
-    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,0,0],
+    [1,1,1,0,0,0,0,1,0,0],
     [1,0,1,0,0,0,0,1,1,1],
     [1,0,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,0,0,0,1],
